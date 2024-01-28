@@ -14,6 +14,7 @@ function [X, gradF,CLR] = presecisce(T0, v, h, F, P)
     gradF = NaN;
     CLR = NaN;
     maxit = 1000;
+
     zacSign = sign(F(T0,P));
     
     
