@@ -4,7 +4,7 @@ import numpy as np
 import numpy.linalg as lin
 from matplotlib.pyplot import imshow, show
 from tri import tri
-#from aabb import aabb
+from aabb import aabb
 import pprint
 import time
 import winsound
@@ -74,7 +74,7 @@ def odboj(smer, parametri, T0, luc, tr_globina=0, korak=0.1, max_globina=1):
     return (X, gradF, CLR, oddaljenost, senca)
 
 
-def raytracing(T0, loc, luc, parametri, viewport, BG, glad=False):
+def raytracing(T0, loc, luc, parametri, okvir, viewport, BG, glad=False):
     t = time.time()
 
     visina = loc[0]
@@ -89,8 +89,8 @@ def raytracing(T0, loc, luc, parametri, viewport, BG, glad=False):
             senca = None
             pix = [-viewport + 2*viewport/sirina * x, 0, viewport - 2*viewport/visina * y]                      #platno je ravnina y = 0
             smer = np.subtract(pix, T0)                                         #žarek kot parametrična premica
-            #if aabb(T0, smer, okvir):
-            (_, _, CLR, _, senca) = odboj(smer, parametri, T0, luc)             #rekurzivno preverjanje odbojev
+            if aabb(T0, smer, okvir):
+                (_, _, CLR, _, senca) = odboj(smer, parametri, T0, luc)             #rekurzivno preverjanje odbojev
                 # CLR = [0, 0, 255]
                 # exit = True
             if senca is not None:
@@ -185,23 +185,23 @@ def main():                                         #nalozimo podatke
     print("Parse time taken:", parseElapsed)
 
 
-    # minX = np.inf
-    # maxX = -np.inf
-    # minY = np.inf
-    # maxY = -np.inf
-    # minZ = np.inf
-    # maxZ = -np.inf
-    # for key in VM:
-    #     X, Y, Z = VM[key]
-    #     minX = min(minX, X)
-    #     maxX = max(maxX, X)
-    #     minY = min(minY, Y)
-    #     maxY = max(maxY, Y)
-    #     minZ = min(minZ, Z)
-    #     maxZ = max(maxZ, Z)
-    # okvir = [minX, maxX, minY, maxY, minZ, maxZ]
+    minX = np.inf
+    maxX = -np.inf
+    minY = np.inf
+    maxY = -np.inf
+    minZ = np.inf
+    maxZ = -np.inf
+    for key in VM:
+        X, Y, Z = VM[key]
+        minX = min(minX, X)
+        maxX = max(maxX, X)
+        minY = min(minY, Y)
+        maxY = max(maxY, Y)
+        minZ = min(minZ, Z)
+        maxZ = max(maxZ, Z)
+    okvir = [minX, maxX, minY, maxY, minZ, maxZ]
 
-    raytracing(T0, loc, luc, parametri, viewport, BG)
+    raytracing(T0, loc, luc, parametri, okvir, viewport, BG)
 
 
 if __name__ == "__main__":
