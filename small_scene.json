@@ -1,0 +1,15 @@
+{"objekti": "small_scene.obj",
+ "loc": [500, 500],
+ "luc": [0, 0, 5],
+ "luc_moc": 1,
+ "T0": [-5, -3, 2],
+ "viewport": 10,
+ "BG": [0, 0, 100],
+ "barve": [[255, 255, 255], [255, 0, 0], [0, 255, 0], [0, 100, 100], [130, 70, 0]],
+ "glad": false,
+ "bvh": false,
+ "bvh2": false,
+ "bvh3": true,
+ "sence": false,
+ "max_odbojev": 2
+}

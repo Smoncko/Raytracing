@@ -1,0 +1,15 @@
+{"objekti": "Akhlan.obj",
+ "loc": [500, 500],
+ "luc": [45, 200, 70],
+ "luc_moc": 20,
+ "T0": [0, -20, 2],
+ "viewport": 10,
+ "BG": [0, 100, 0],
+ "barve": [[125, 125, 125]],
+ "glad": false,
+ "bvh": false,
+ "bvh2": false,
+ "bvh3": true,
+ "sence": false,
+ "max_odbojev": 2
+}

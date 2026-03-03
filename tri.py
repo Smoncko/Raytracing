@@ -1,33 +1,32 @@
 import numpy as np
 import numpy.linalg as lin
+from razredi import Parameter
 
-def tri(V0, smer, P):
-    V0 = np.asarray(V0)                     #Zažetna točka
-    P = np.asarray(P)                       #Parametri trikotnika
+def tri(V0, smer, par: Parameter):
+    tol = 1e-4
 
-    tol = 1e-6
+    Va = par.A                               #Koordinate oglišč
+    Vb = par.B
+    Vc = par.C
 
-    rgb = P[0]
-
-    Va = P[1]                               #Koordinate oglišč
-    Vb = P[2]
-    Vc = P[3]
-
-    N = (P[4] + P[5] + P[6]) / 3            #Normala trikotnika iz normal oglišč
+    N = (par.nA + par.nB + par.nC) / 3            #Normala trikotnika iz normal oglišč
 
     # print("\t", smer)
     smer = smer / lin.norm(smer)
     # print("\t", smer)
     div = np.dot(smer, N)                   #Presečišče vektorja in ravnine
-    if div == 0:
+    if div >= 0:
         return (False, None, None, None)
+    
     d = np.dot((Va - V0), N) / div
-    (x, y, z) = V0 + smer * d               #Točka na ravnini
+    if (d < 1e-4):                             #Presečišče je na napačni strani žarka
+        return (False, None, None, None)
 
-    Vp = [x, y, z]
+    Vp = V0 + smer * d               #Točka na ravnini, ki jo določa trikotnik
 
     Vba = Vb - Va
     Vca = Vc - Va
+    Vbc = Vb - Vc
     Vap = Va - Vp
     Vbp = Vb - Vp
     Vcp = Vc - Vp
@@ -40,13 +39,13 @@ def tri(V0, smer, P):
     A2 = lin.norm(n2)
     A3 = lin.norm(n3)
 
-    hit = False
-
-    if A1 + A2 + A3 <= A + tol and d >= 0:
-        # print(f"Inside: {A1} + {A2} + {A3} <= {A}\nV0 = {V0}, smer = {smer}, d = {d}\nVp = {Vp}\n")
-        hit = True
+    if A1 + A2 + A3 <= A + tol:
+        return True, Vp, N, par.barve
     else:
-        # print("Outside")
-        pass
-    # print(hit, Vp, N, rgb)
-    return (hit, Vp, N, rgb)
+        if (A1 + A2 + A3 - A < 0.1):
+            d1 = A1 / lin.norm(Vba)
+            d2 = A2 / lin.norm(Vca)
+            d3 = A3 / lin.norm(Vbc)
+            if d1 < tol or d2 < tol or d3 < tol:
+                return True, Vp, N, par.barve
+        return False, None, None, None
