@@ -6,7 +6,7 @@ from matplotlib.pyplot import imshow, show, axis
 from tri import tri
 from aabb import aabb
 import time
-import winsound
+# import winsound
 from razredi import *
 from sklearn.cluster import KMeans
 from collections import OrderedDict
@@ -178,6 +178,7 @@ def raytracing(par: Conf):
 
     zaslon = np.zeros((visina, sirina, 3))
     shadows = np.zeros((visina, sirina))
+    dist = 0
 
     #za vsako točko na zaslonu
     # for y in range(373, 374):
@@ -191,13 +192,15 @@ def raytracing(par: Conf):
             smer = np.subtract(pix, par.T0)
 
             #rekurzivno preverjanje odbojev
-            _, _, CLR, _, senca = odboj(smer, par.T0, par)                   
+            X, _, CLR, _, senca = odboj(smer, par.T0, par)                   
             if senca == 1:
                 shadows[y, x] = 1
+
             if CLR is None:
                 zaslon[y, x, :] = par.BG
             else:
                 zaslon[y, x, :] = CLR
+                dist += lin.norm(X - par.T0)
 
         print(f"Completed row {y + 1} of {visina}")
     elapsed = time.time() - t
@@ -208,9 +211,10 @@ def raytracing(par: Conf):
         for x in range(sirina):
             if (zaslon[y, x, :] == par.BG).all():
                 ozadje += 1
-    print("Točke v barvi ozadja: ", ozadje)
-    print("Preverjenih trikotnikov: ", countTris)
-    print("Preverjenih okvirjev: ", countAABB)
+    print("Točke v barvi ozadja:", ozadje)
+    print("Preverjenih trikotnikov:", countTris)
+    print("Preverjenih okvirjev:", countAABB)
+    print("Povprečna oddaljenost:", dist / (visina * sirina))
 
     #Laplacevo glajenje slik
     #Blaž Erzar
@@ -222,9 +226,9 @@ def raytracing(par: Conf):
                     #Vsaka točka z barvo ozadja postane povprečje svojih štirih sosedov
                     zaslon[y, x, :] = (zaslon2[y - 1, x, :] + zaslon2[y + 1, x, :] + zaslon2[y, x - 1, :] + zaslon2[y, x + 1, :]) / 4
     
-    duration = 500  # milliseconds
-    freq = 440  # Hz
-    winsound.Beep(freq, duration)
+    # duration = 500  # milliseconds
+    # freq = 440  # Hz
+    # winsound.Beep(freq, duration)
 
     zaslon /= 256
     imshow(zaslon)
