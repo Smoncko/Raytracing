@@ -1,5 +1,15 @@
 # Koda za diplomsko nalogo sledenje žarkom
 
+## Zahtevane knjižnice
+    Numpy
+    Matplotlib
+    Scikit-learn
+
+## Pridobitev knjižnic
+    pip install numpy
+    pip install -U matplotlib
+    pip install -U scikit-learn
+
 ## Uporaba programa
 Program poganjamo preko ukazne vrstice v obliki:
 ```
@@ -22,6 +32,5 @@ kjer je *konfig.json* konfiguracijska datoteka v sledečem formatu:
     "sence": bool                                     - učinek senc
     "max_odbojev": i                                  - največje dovoljeno število odbojev
 
-Dve take konfiguracijski datoteki s pripadajočimi objektnimi datotekami sta za lažjo uporabo že dodani.
-
+Dve taki konfiguracijski datoteki s pripadajočimi objektnimi datotekami sta za lažjo uporabo že dodani.
 Ob izvozu objektne datoteke iz modelirnega programa (kot je npr. Blender) je priporočeno, da se nastavita glavni osi na Y (naprej) in Z (gor) ter da datoteko izvozimo brez UV koordinat in z normalami. Nujno je tudi, da je prizor zgrajen iz trikotnikov in ne štirikotnikov.
