@@ -1,6 +1,8 @@
 import sys
 from razredi import Meje
 
+#Algoritem za preverjanje presečišča med žarkom in okvirjem
+
 def aabb(T0, smer, okvir: Meje):
     t1 = (okvir.minX - T0[0]) / (smer[0] + sys.float_info.epsilon)
     t2 = (okvir.maxX - T0[0]) / (smer[0] + sys.float_info.epsilon)

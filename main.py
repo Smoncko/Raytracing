@@ -15,6 +15,8 @@ countAABB = 0
 countTris = 0
 
 def bvh_kmeans(VM):
+    #Algoritem za razbijanje objekta s k-voditelji
+
     Vx = []
     Vy = []
     Vz = []
@@ -26,14 +28,13 @@ def bvh_kmeans(VM):
 
     points = list(zip(Vx, Vy, Vz))
 
+    #Voditeljev je 7, ta parameter je spremenljiv
     k = 7
-    # timer = time.time()
     kmeans = KMeans(n_clusters=k)
     kmeans.fit(points)
-    # print("KMeans time taken: ", time.time() - timer)
 
     minmax = []
-    for i in range(k):
+    for _ in range(k):
         minmax.append(Meje())
     for l in range(len(kmeans.labels_)):
         minmax[kmeans.labels_[l]].posodobi([Vx[l], Vy[l], Vz[l]])        
@@ -42,6 +43,8 @@ def bvh_kmeans(VM):
 
 
 def naredi_bvh(parametri, minmax, meje: Meje, max_globina=1, tr_globina=0):
+    #Algoritem za ustvarjanje hierarhije očrtanih okvirjev
+
     ploskve = []
     newMM = []
     
@@ -73,6 +76,7 @@ def naredi_bvh(parametri, minmax, meje: Meje, max_globina=1, tr_globina=0):
     return okvir
 
 def presek_z_bvh(T0, smer, okvir):
+    #Algoritem za iskanje preseka s hierarhijo očrtanih okvirjev
     parametri = {}
 
     hit, tmin, tmax = aabb(T0, smer, okvir.minmax)
@@ -87,6 +91,7 @@ def presek_z_bvh(T0, smer, okvir):
     return parametri
 
 def preveri_senco(par: Conf, X, luc_pr):
+    #Algoritem za preverjanje, ali smo v senci
     global countTris
     preverjeni = set()
     novi_parametri = {(0, 0): par.parametri}
@@ -103,6 +108,7 @@ def preveri_senco(par: Conf, X, luc_pr):
     return 0
 
 def odboj(smer, T0, par: Conf, tr_globina=0):
+    #Algoritem za sledenje žarkom
     X = None
     gradF = None
     CLR = None
@@ -116,6 +122,7 @@ def odboj(smer, T0, par: Conf, tr_globina=0):
     if (par.bvh is not None):
         novi_parametri = OrderedDict(sorted(presek_z_bvh(T0, smer, par.bvh).items()))
 
+    #Če odkomentiramo ta del, nam program vrne prileganje hierarhije očrtanih okvirjev na motiv
     # if sum(map(len, novi_parametri.values())) > 0:
     #     return X, gradF, [100, 100, 100], najblizji, senca
     # else:
@@ -181,8 +188,6 @@ def raytracing(par: Conf):
     dist = 0
 
     #za vsako točko na zaslonu
-    # for y in range(373, 374):
-    #     for x in range(178, 179):
     for y in range(0, visina):
         for x in range(0, sirina):
             #platno je ravnina y = 0
@@ -278,16 +283,13 @@ def main():
     cosBeta = np.dot(vec, tmp) / (lin.norm(vec) * lin.norm(tmp))
     beta = np.arccos(cosBeta)
     sinBeta = np.sin(beta)
-    # print(alpha * 180 / np.pi, beta * 180 / np.pi)
 
     Rx = np.array([ [1, 0, 0],
                     [0, cosBeta, -sinBeta],
                     [0, sinBeta, cosBeta]])
     Rot = Rx @ Rz
-    # print(Rot)
     par.T0 = (Rot @ np.copy(par.T0)[:, np.newaxis]).flatten()
     par.luc = (Rot @ np.copy(par.luc)[:, np.newaxis]).flatten()
-    # print()
 
     parseTimer = time.time()
     VM = {}

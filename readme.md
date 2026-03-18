@@ -34,3 +34,11 @@ kjer je *konfig.json* konfiguracijska datoteka v sledečem formatu:
 
 Dve taki konfiguracijski datoteki s pripadajočimi objektnimi datotekami sta za lažjo uporabo že dodani.
 Ob izvozu objektne datoteke iz modelirnega programa (kot je npr. Blender) je priporočeno, da se nastavita glavni osi na Y (naprej) in Z (gor) ter da datoteko izvozimo brez UV koordinat in z normalami. Nujno je tudi, da je prizor zgrajen iz trikotnikov in ne štirikotnikov.
+
+## point_cloud.py
+
+Program kot argument vzame objektno datoteko in izriše razsevni diagram 3D, kjer so točke objekta pobarvane glede na skupino, ki ji pripadajo po gručenju s k-voditelji. Parameter *k* lahko spremenimo v kodi.
+Program poganjamo preko ukazne vrstice v obliki:
+```
+python point_cloud.py objekt.obj
+```

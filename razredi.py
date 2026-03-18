@@ -1,6 +1,7 @@
 import queue
 import numpy as np
 
+#Konfiguracijski razred
 class Conf:
     T0 = []
     loc = []
@@ -15,6 +16,7 @@ class Conf:
     max_bvh_glob = 5
     sence = False
 
+#Razred za parametre enega trikotnika
 class Parameter:
     def __init__(self, barve, A, B, C, nA, nB, nC, idx):
         self.barve = barve
@@ -28,6 +30,7 @@ class Parameter:
     def __repr__(self):
         return f"Parameter\nBarve:{self.barve}\nA:{self.A} B:{self.B} C:{self.C}\nnA:{self.nA} nB:{self.nB} nC:{self.nC}"
 
+#Razred za osno poravnani očrtani okvir
 class Okvir:
     def __init__(self, otroci, minmax, parametri):
         self.otroci = otroci
@@ -48,6 +51,7 @@ class Okvir:
             if len(front.otroci) == 0:
                 print(len(front.parametri))
 
+#Razred za meje očrtanega okvirja
 class Meje:
     def __init__(self, minX=np.inf, maxX=-np.inf, minY=np.inf, maxY=-np.inf, minZ=np.inf, maxZ=-np.inf):
         self.minX = minX
